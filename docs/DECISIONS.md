@@ -35,6 +35,9 @@ Tiptap's `onUpdate` fires on transactions beyond real content edits (e.g. select
 ## [T+0:00] Fixed: `npm test` didn't actually work from a clean shell
 The original `pretest` script (`DIRECT_DATABASE_URL=$TEST_DATABASE_URL prisma migrate deploy`) relied on `$TEST_DATABASE_URL` being an already-exported shell variable so it could be substituted into `DIRECT_DATABASE_URL` before `prisma` even started. `.env` is loaded by `dotenv/config` inside the Node process, not by the shell — so a reviewer who just clones the repo, fills in `.env`, and runs `npm test` would hit "Connection url is empty," never a passing suite. Caught by literally unsetting the variable I'd been using and re-running the command. Fixed by branching inside `prisma.config.ts` on `NODE_ENV === "test"` (set inline in the script, which any shell handles) to pick `TEST_DATABASE_URL` — no shell-level variable indirection needed.
 
+## [T+0:00] Renamed Folio → Kalam mid-build
+Asked for something more "indie" using a Hindi word partway through Phase 0. Chose Kalam (कलम, "pen") over Saanjha ("shared" — thematically closer to the sharing feature but less universally readable), Panna ("page"), and Rachna ("creation"). Renamed the GitHub repo, the Vercel project (and its default domain), the session cookie, and the seed email domain in one pass rather than patching pieces incrementally, since a half-renamed project would be worse than either name consistently applied.
+
 ## [T+0:00] Explicit scope cuts
 - Real-time collaborative editing (Yjs/CRDT + persistent WebSocket server): out of reach for a serverless free-tier deploy in this timebox. Shipping debounced autosave + last-writer-wins + a visible save-state indicator instead, documented plainly as not real-time collab.
 - Blob storage for uploads: parsing files in the Route Handler and persisting only the resulting HTML removes a whole storage dependency and its failure modes, at the cost of not retaining the original file.
