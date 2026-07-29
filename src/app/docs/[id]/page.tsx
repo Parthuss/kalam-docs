@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import { verifySession } from "@/lib/dal";
 import { getDocumentWithAccess } from "@/lib/documents";
-import { canView } from "@/lib/permissions";
+import { canView, canEdit } from "@/lib/permissions";
 import DocumentHeader from "./document-header";
+import DocumentEditor from "./editor";
 
 export default async function DocumentPage({
   params,
@@ -18,13 +19,12 @@ export default async function DocumentPage({
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8">
       <DocumentHeader id={id} title={result.document.title} access={result.level} />
-      <div
-        className="prose prose-slate mt-6 max-w-none"
-        dangerouslySetInnerHTML={{ __html: result.document.content }}
+      <DocumentEditor
+        key={id}
+        id={id}
+        initialContent={result.document.content}
+        editable={canEdit(result.level)}
       />
-      <p className="mt-8 text-xs text-slate-400">
-        Rich-text editor arrives in Phase 3.
-      </p>
     </div>
   );
 }
