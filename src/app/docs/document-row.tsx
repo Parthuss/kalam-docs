@@ -84,7 +84,7 @@ export default function DocumentRow({
                 setEditing(false);
               }
             }}
-            className="w-full rounded border border-indigo-300 px-2 py-1 text-sm text-slate-900 focus:outline-none"
+            className="w-full rounded border border-indigo-300 px-2 py-1 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
           />
         ) : (
           <Link

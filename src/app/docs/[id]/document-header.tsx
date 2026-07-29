@@ -58,7 +58,7 @@ export default function DocumentHeader({
                   setEditing(false);
                 }
               }}
-              className="min-w-0 flex-1 rounded border border-indigo-300 px-2 py-1 text-lg font-semibold text-slate-900 focus:outline-none"
+              className="min-w-0 flex-1 rounded border border-indigo-300 px-2 py-1 text-lg font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
             />
           ) : (
             <button

@@ -17,7 +17,10 @@ export default async function DocumentPage({
   if (!result || !canView(result.level)) notFound();
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8">
+    <main
+      id="main-content"
+      className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8"
+    >
       <DocumentHeader id={id} title={result.document.title} access={result.level} />
       <DocumentEditor
         key={id}
@@ -25,6 +28,6 @@ export default async function DocumentPage({
         initialContent={result.document.content}
         editable={canEdit(result.level)}
       />
-    </div>
+    </main>
   );
 }

@@ -21,7 +21,10 @@ export default async function DocsHome() {
   ]);
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8">
+    <main
+      id="main-content"
+      className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8"
+    >
       <div className="flex items-center justify-between border-b border-slate-200 pb-4">
         <h1 className="text-xl font-semibold text-slate-900">Kalam</h1>
         <div className="flex items-center gap-4">
@@ -88,6 +91,6 @@ export default async function DocsHome() {
           </ul>
         )}
       </section>
-    </div>
+    </main>
   );
 }

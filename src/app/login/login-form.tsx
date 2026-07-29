@@ -38,7 +38,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center px-4 py-16">
+    <main id="main-content" className="flex flex-1 items-center justify-center px-4 py-16">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <h1 className="text-2xl font-semibold text-slate-900">Kalam</h1>
@@ -110,6 +110,6 @@ export default function LoginForm() {
           </code>
         </p>
       </div>
-    </div>
+    </main>
   );
 }

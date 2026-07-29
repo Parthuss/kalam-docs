@@ -73,7 +73,10 @@ export default function DocumentEditor({
           <SaveIndicator state={saveState} onRetry={() => save(lastHtmlRef.current)} />
         )}
       </div>
-      <EditorContent editor={editor} className="mt-4" />
+      <EditorContent
+        editor={editor}
+        className="mt-4 rounded-lg focus-within:ring-2 focus-within:ring-indigo-100"
+      />
     </div>
   );
 }
