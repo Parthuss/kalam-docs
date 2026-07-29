@@ -21,76 +21,81 @@ export default async function DocsHome() {
   ]);
 
   return (
-    <main
-      id="main-content"
-      className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8"
-    >
-      <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-        <h1 className="text-xl font-semibold text-slate-900">Kalam</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-slate-500">{session.name}</span>
-          <LogoutButton />
+    <div className="flex flex-1 flex-col">
+      <div className="border-b border-stone-200 bg-white">
+        <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-4">
+          <h1 className="text-xl font-semibold text-slate-900">Kalam</h1>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-slate-500">{session.name}</span>
+            <LogoutButton />
+          </div>
         </div>
       </div>
 
-      <section className="mt-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium tracking-wide text-slate-400">
-            My documents
-          </h2>
-          <div className="flex items-center gap-2">
-            <ImportButton />
-            <CreateDocumentButton />
+      <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">
+        <section>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-sm font-medium tracking-wide text-slate-400">
+              My documents
+            </h2>
+            <div className="flex shrink-0 items-center gap-2">
+              <ImportButton />
+              <CreateDocumentButton />
+            </div>
           </div>
-        </div>
-        <p className="mt-1 text-xs text-slate-400">
-          Import supports .txt, .md, and .docx files up to 2 MB.
-        </p>
-        {owned.length === 0 ? (
-          <p className="mt-4 rounded-lg border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-400">
-            No documents yet — create your first one.
+          <p className="mt-1 text-xs text-slate-400">
+            Import supports .txt, .md, and .docx files up to 2 MB.
           </p>
-        ) : (
-          <ul className="mt-3 divide-y divide-slate-100">
-            {owned.map((doc) => (
-              <DocumentRow
-                key={doc.id}
-                id={doc.id}
-                title={doc.title}
-                updatedAt={doc.updatedAt.toISOString()}
-                canRename
-                canDelete
-              />
-            ))}
-          </ul>
-        )}
-      </section>
+          <div className="mt-3 overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm">
+            {owned.length === 0 ? (
+              <p className="px-5 py-10 text-center text-sm text-slate-400">
+                No documents yet — create your first one.
+              </p>
+            ) : (
+              <ul className="divide-y divide-stone-100">
+                {owned.map((doc) => (
+                  <DocumentRow
+                    key={doc.id}
+                    id={doc.id}
+                    title={doc.title}
+                    updatedAt={doc.updatedAt.toISOString()}
+                    canRename
+                    canDelete
+                  />
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
 
-      <section className="mt-10">
-        <h2 className="text-sm font-medium tracking-wide text-slate-400">
-          Shared with me
-        </h2>
-        {sharedRows.length === 0 ? (
-          <p className="mt-4 rounded-lg border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-400">
-            Nothing has been shared with you yet.
-          </p>
-        ) : (
-          <ul className="mt-3 divide-y divide-slate-100">
-            {sharedRows.map((s) => (
-              <DocumentRow
-                key={s.document.id}
-                id={s.document.id}
-                title={s.document.title}
-                updatedAt={s.document.updatedAt.toISOString()}
-                canRename={s.role === "EDITOR"}
-                canDelete={false}
-                badge={s.role === "EDITOR" ? "Editor" : "Viewer"}
-                sharedBy={s.grantedBy.name}
-              />
-            ))}
-          </ul>
-        )}
-      </section>
-    </main>
+        <section className="mt-10">
+          <h2 className="text-sm font-medium tracking-wide text-slate-400">
+            Shared with me
+          </h2>
+          <div className="mt-3 overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm">
+            {sharedRows.length === 0 ? (
+              <p className="px-5 py-10 text-center text-sm text-slate-400">
+                Nothing has been shared with you yet.
+              </p>
+            ) : (
+              <ul className="divide-y divide-stone-100">
+                {sharedRows.map((s) => (
+                  <DocumentRow
+                    key={s.document.id}
+                    id={s.document.id}
+                    title={s.document.title}
+                    updatedAt={s.document.updatedAt.toISOString()}
+                    canRename={s.role === "EDITOR"}
+                    canDelete={false}
+                    badge={s.role === "EDITOR" ? "Editor" : "Viewer"}
+                    sharedBy={s.grantedBy.name}
+                  />
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }

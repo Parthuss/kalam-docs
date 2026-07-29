@@ -69,7 +69,7 @@ export default function DocumentRow({
   }
 
   return (
-    <li className="flex items-center justify-between rounded-lg px-2 py-3 -mx-2 hover:bg-stone-50">
+    <li className="flex items-center justify-between px-5 py-4 hover:bg-stone-50">
       <div className="min-w-0 flex-1">
         {editing ? (
           <input

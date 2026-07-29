@@ -40,7 +40,7 @@ export default function DocumentHeader({
 
   return (
     <>
-      <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+      <div className="flex items-center justify-between">
         <div className="flex min-w-0 items-center gap-3">
           <Link href="/docs" className="shrink-0 text-sm text-slate-400 hover:text-slate-600">
             ← Documents

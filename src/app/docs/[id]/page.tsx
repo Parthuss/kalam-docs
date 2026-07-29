@@ -18,8 +18,10 @@ export default async function DocumentPage({
 
   return (
     <main id="main-content" className="flex w-full flex-1 flex-col">
-      <div className="mx-auto w-full max-w-3xl px-6 pt-8">
-        <DocumentHeader id={id} title={result.document.title} access={result.level} />
+      <div className="border-b border-stone-200 bg-white">
+        <div className="mx-auto w-full max-w-3xl px-6 py-4">
+          <DocumentHeader id={id} title={result.document.title} access={result.level} />
+        </div>
       </div>
       <DocumentEditor
         key={id}
