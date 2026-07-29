@@ -46,7 +46,7 @@ export default function DocumentEditor({
     editable,
     editorProps: {
       attributes: {
-        class: "prose prose-slate max-w-none focus:outline-none min-h-[50vh]",
+        class: "prose prose-lg prose-slate max-w-none focus:outline-none",
       },
     },
     onUpdate: ({ editor, transaction }) => {
@@ -66,17 +66,20 @@ export default function DocumentEditor({
   }, []);
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        {editable && editor ? <Toolbar editor={editor} /> : <div />}
-        {editable && (
-          <SaveIndicator state={saveState} onRetry={() => save(lastHtmlRef.current)} />
-        )}
+    <div className="flex flex-1 flex-col bg-stone-100">
+      {editable && editor && (
+        <div className="sticky top-0 z-10 border-b border-stone-200 bg-stone-100">
+          <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-4 px-6 py-2">
+            <Toolbar editor={editor} />
+            <SaveIndicator state={saveState} onRetry={() => save(lastHtmlRef.current)} />
+          </div>
+        </div>
+      )}
+      <div className="flex flex-1 justify-center px-6 py-10">
+        <div className="min-h-[60vh] w-full max-w-[47.5rem] rounded-sm border border-stone-200 bg-white px-6 py-10 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-4px_rgba(15,23,42,0.08)] focus-within:ring-2 focus-within:ring-accent-100 sm:px-16 sm:py-20">
+          <EditorContent editor={editor} />
+        </div>
       </div>
-      <EditorContent
-        editor={editor}
-        className="mt-4 rounded-lg focus-within:ring-2 focus-within:ring-indigo-100"
-      />
     </div>
   );
 }
@@ -88,18 +91,18 @@ function SaveIndicator({
   state: SaveState;
   onRetry: () => void;
 }) {
-  if (state === "idle") return null;
+  if (state === "idle") return <span />;
   if (state === "saving") {
-    return <span className="text-xs text-slate-400">Saving…</span>;
+    return <span className="shrink-0 text-xs text-slate-400">Saving…</span>;
   }
   if (state === "saved") {
-    return <span className="text-xs text-slate-400">All changes saved</span>;
+    return <span className="shrink-0 text-xs text-slate-400">All changes saved</span>;
   }
   return (
     <button
       type="button"
       onClick={onRetry}
-      className="text-xs font-medium text-red-600 hover:text-red-700"
+      className="shrink-0 text-xs font-medium text-red-600 hover:text-red-700"
     >
       Save failed — retry
     </button>

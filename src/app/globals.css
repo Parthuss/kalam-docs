@@ -8,4 +8,9 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-accent-50: #eff6f4;
+  --color-accent-100: #d9ebe7;
+  --color-accent-300: #82bcae;
+  --color-accent-600: #216358;
+  --color-accent-700: #1a4f46;
 }

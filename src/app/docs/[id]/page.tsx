@@ -17,11 +17,10 @@ export default async function DocumentPage({
   if (!result || !canView(result.level)) notFound();
 
   return (
-    <main
-      id="main-content"
-      className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8"
-    >
-      <DocumentHeader id={id} title={result.document.title} access={result.level} />
+    <main id="main-content" className="flex w-full flex-1 flex-col">
+      <div className="mx-auto w-full max-w-3xl px-6 pt-8">
+        <DocumentHeader id={id} title={result.document.title} access={result.level} />
+      </div>
       <DocumentEditor
         key={id}
         id={id}

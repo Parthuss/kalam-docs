@@ -26,7 +26,7 @@ export default function CreateDocumentButton() {
     <button
       onClick={create}
       disabled={busy}
-      className="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:opacity-50"
+      className="rounded-lg bg-accent-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-accent-700 disabled:opacity-50"
     >
       {busy ? "Creating…" : "New document"}
     </button>

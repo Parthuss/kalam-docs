@@ -58,7 +58,7 @@ export default function DocumentHeader({
                   setEditing(false);
                 }
               }}
-              className="min-w-0 flex-1 rounded border border-indigo-300 px-2 py-1 text-lg font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              className="min-w-0 flex-1 rounded border border-accent-300 px-2 py-1 text-lg font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-200"
             />
           ) : (
             <button
@@ -87,7 +87,7 @@ export default function DocumentHeader({
             <button
               type="button"
               onClick={() => setSharing(true)}
-              className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+              className="rounded-lg border border-accent-600 px-3 py-1.5 text-sm font-medium text-accent-700 transition hover:bg-accent-50"
             >
               Share
             </button>

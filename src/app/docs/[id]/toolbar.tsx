@@ -20,7 +20,7 @@ function Btn({
       aria-label={label}
       aria-pressed={active}
       className={`rounded px-2 py-1 text-sm transition ${
-        active ? "bg-indigo-100 text-indigo-700" : "text-slate-600 hover:bg-slate-100"
+        active ? "bg-accent-100 text-accent-700" : "text-slate-600 hover:bg-slate-100"
       }`}
     >
       {children}
@@ -30,7 +30,7 @@ function Btn({
 
 export default function Toolbar({ editor }: { editor: Editor }) {
   return (
-    <div className="flex flex-wrap items-center gap-1 border-b border-slate-200 pb-2">
+    <div className="flex flex-wrap items-center gap-1">
       <Btn
         label="Bold"
         active={editor.isActive("bold")}
@@ -88,6 +88,13 @@ export default function Toolbar({ editor }: { editor: Editor }) {
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
       >
         1. List
+      </Btn>
+      <div className="mx-1 h-4 w-px bg-slate-200" />
+      <Btn
+        label="Clear formatting"
+        onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}
+      >
+        Clear
       </Btn>
       <div className="mx-1 h-4 w-px bg-slate-200" />
       <Btn label="Undo" onClick={() => editor.chain().focus().undo().run()}>

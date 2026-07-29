@@ -69,7 +69,7 @@ export default function DocumentRow({
   }
 
   return (
-    <li className="flex items-center justify-between py-3">
+    <li className="flex items-center justify-between rounded-lg px-2 py-3 -mx-2 hover:bg-stone-50">
       <div className="min-w-0 flex-1">
         {editing ? (
           <input
@@ -84,12 +84,12 @@ export default function DocumentRow({
                 setEditing(false);
               }
             }}
-            className="w-full rounded border border-indigo-300 px-2 py-1 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            className="w-full rounded border border-accent-300 px-2 py-1 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-200"
           />
         ) : (
           <Link
             href={`/docs/${id}`}
-            className="block truncate text-sm font-medium text-slate-800 hover:text-indigo-600"
+            className="block truncate text-sm font-medium text-slate-800 hover:text-accent-700"
           >
             {title}
           </Link>
@@ -101,7 +101,7 @@ export default function DocumentRow({
       </div>
       <div className="ml-4 flex shrink-0 items-center gap-3">
         {badge && (
-          <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600">
+          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
             {badge}
           </span>
         )}
@@ -130,7 +130,7 @@ export default function DocumentRow({
               disabled={busy}
               className={
                 confirmingDelete
-                  ? "text-xs font-medium text-red-600 hover:text-red-700"
+                  ? "rounded-md border border-red-200 bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700 hover:bg-red-100"
                   : "text-xs text-slate-400 hover:text-red-600"
               }
             >

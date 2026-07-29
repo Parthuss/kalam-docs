@@ -92,12 +92,12 @@ export default function ShareModal({
             placeholder="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none"
+            className="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-accent-600 focus:outline-none focus:ring-2 focus:ring-accent-100"
           />
           <select
             value={role}
             onChange={(e) => setRole(e.target.value as Role)}
-            className="rounded-lg border border-slate-200 px-2 py-2 text-sm text-slate-700 focus:border-indigo-500 focus:outline-none"
+            className="rounded-lg border border-slate-200 px-2 py-2 text-sm text-slate-700 focus:border-accent-600 focus:outline-none"
           >
             <option value="VIEWER">Viewer</option>
             <option value="EDITOR">Editor</option>
@@ -105,7 +105,7 @@ export default function ShareModal({
           <button
             type="submit"
             disabled={busy}
-            className="shrink-0 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:opacity-50"
+            className="shrink-0 rounded-lg bg-accent-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-accent-700 disabled:opacity-50"
           >
             Share
           </button>
