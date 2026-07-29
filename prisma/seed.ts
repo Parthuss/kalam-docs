@@ -8,9 +8,9 @@ const prisma = new PrismaClient({
 
 // Fixed, documented credentials — published in README for reviewers.
 const USERS = [
-  { name: "Alice Chen", email: "alice@folio.dev", password: "password123" },
-  { name: "Bob Martinez", email: "bob@folio.dev", password: "password123" },
-  { name: "Carol Singh", email: "carol@folio.dev", password: "password123" },
+  { name: "Alice Chen", email: "alice@kalam.dev", password: "password123" },
+  { name: "Bob Martinez", email: "bob@kalam.dev", password: "password123" },
+  { name: "Carol Singh", email: "carol@kalam.dev", password: "password123" },
 ];
 
 async function main() {

@@ -7,7 +7,7 @@ export type SessionPayload = {
   email: string;
 };
 
-const COOKIE_NAME = "folio_session";
+const COOKIE_NAME = "kalam_session";
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
 
 function getSecretKey() {
