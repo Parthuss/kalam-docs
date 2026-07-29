@@ -1,0 +1,59 @@
+// Folio — collaborative document editor
+// Postgres (Neon), not SQLite: sharing across two accounts must survive
+// cold starts and refreshes during review. See docs/ARCHITECTURE.md.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ShareRole {
+  VIEWER
+  EDITOR
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  documents     Document[]      @relation("OwnedDocuments")
+  shares        DocumentShare[] @relation("ShareRecipient")
+  grantedShares DocumentShare[] @relation("ShareGrantor")
+}
+
+model Document {
+  id             String   @id @default(cuid())
+  title          String   @default("Untitled document")
+  content        String   @default("")
+  sourceFilename String?
+  ownerId        String
+  owner          User     @relation("OwnedDocuments", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  shares DocumentShare[]
+
+  @@index([ownerId, updatedAt])
+}
+
+model DocumentShare {
+  id          String    @id @default(cuid())
+  documentId  String
+  document    Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation("ShareRecipient", fields: [userId], references: [id], onDelete: Cascade)
+  role        ShareRole @default(VIEWER)
+  grantedById String
+  grantedBy   User      @relation("ShareGrantor", fields: [grantedById], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@unique([documentId, userId])
+  @@index([userId])
+}
