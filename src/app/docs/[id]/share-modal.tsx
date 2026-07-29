@@ -21,6 +21,8 @@ export default function ShareModal({
   const [role, setRole] = useState<Role>("VIEWER");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [rowBusyId, setRowBusyId] = useState<string | null>(null);
+  const [confirmingRevokeId, setConfirmingRevokeId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`/api/documents/${documentId}/shares`)
@@ -50,24 +52,41 @@ export default function ShareModal({
   }
 
   async function changeRole(shareId: string, newRole: Role) {
+    setError(null);
+    setRowBusyId(shareId);
     const res = await fetch(`/api/documents/${documentId}/shares/${shareId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ role: newRole }),
     });
+    setRowBusyId(null);
     if (res.ok) {
       setShares(
         (prev) => prev?.map((s) => (s.id === shareId ? { ...s, role: newRole } : s)) ?? null,
       );
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Couldn't change that person's role.");
     }
   }
 
   async function revoke(shareId: string) {
+    if (confirmingRevokeId !== shareId) {
+      setConfirmingRevokeId(shareId);
+      return;
+    }
+    setError(null);
+    setRowBusyId(shareId);
     const res = await fetch(`/api/documents/${documentId}/shares/${shareId}`, {
       method: "DELETE",
     });
+    setRowBusyId(null);
+    setConfirmingRevokeId(null);
     if (res.ok) {
       setShares((prev) => prev?.filter((s) => s.id !== shareId) ?? null);
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Couldn't revoke that person's access.");
     }
   }
 
@@ -120,31 +139,51 @@ export default function ShareModal({
             <p className="mt-3 text-sm text-slate-400">Only you have access.</p>
           ) : (
             <ul className="mt-3 space-y-2">
-              {shares.map((s) => (
-                <li key={s.id} className="flex items-center justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm text-slate-800">{s.user.name}</p>
-                    <p className="truncate text-xs text-slate-400">{s.user.email}</p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-2">
-                    <select
-                      value={s.role}
-                      onChange={(e) => changeRole(s.id, e.target.value as Role)}
-                      className="rounded border border-slate-200 px-1.5 py-1 text-xs text-slate-600"
-                    >
-                      <option value="VIEWER">Viewer</option>
-                      <option value="EDITOR">Editor</option>
-                    </select>
-                    <button
-                      type="button"
-                      onClick={() => revoke(s.id)}
-                      className="text-xs text-slate-400 hover:text-red-600"
-                    >
-                      Revoke
-                    </button>
-                  </div>
-                </li>
-              ))}
+              {shares.map((s) => {
+                const rowBusy = rowBusyId === s.id;
+                const confirming = confirmingRevokeId === s.id;
+                return (
+                  <li key={s.id} className="flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm text-slate-800">{s.user.name}</p>
+                      <p className="truncate text-xs text-slate-400">{s.user.email}</p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <select
+                        value={s.role}
+                        disabled={rowBusy}
+                        onChange={(e) => changeRole(s.id, e.target.value as Role)}
+                        className="rounded border border-slate-200 px-2 py-1.5 text-xs text-slate-600 disabled:opacity-50"
+                      >
+                        <option value="VIEWER">Viewer</option>
+                        <option value="EDITOR">Editor</option>
+                      </select>
+                      {confirming && (
+                        <button
+                          type="button"
+                          onClick={() => setConfirmingRevokeId(null)}
+                          disabled={rowBusy}
+                          className="rounded px-2 py-1 text-xs text-slate-400 hover:text-slate-700"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => revoke(s.id)}
+                        disabled={rowBusy}
+                        className={
+                          confirming
+                            ? "rounded-md border border-red-200 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-50"
+                            : "rounded px-2 py-1 text-xs text-slate-400 hover:text-red-600 disabled:opacity-50"
+                        }
+                      >
+                        {rowBusy ? "Working…" : confirming ? "Confirm revoke" : "Revoke"}
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
