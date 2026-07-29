@@ -2,6 +2,7 @@ import { verifySession } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 import LogoutButton from "./logout-button";
 import CreateDocumentButton from "./create-document-button";
+import ImportButton from "./import-button";
 import DocumentRow from "./document-row";
 
 export default async function DocsHome() {
@@ -34,8 +35,14 @@ export default async function DocsHome() {
           <h2 className="text-sm font-medium tracking-wide text-slate-400">
             My documents
           </h2>
-          <CreateDocumentButton />
+          <div className="flex items-center gap-2">
+            <ImportButton />
+            <CreateDocumentButton />
+          </div>
         </div>
+        <p className="mt-1 text-xs text-slate-400">
+          Import supports .txt, .md, and .docx files up to 2 MB.
+        </p>
         {owned.length === 0 ? (
           <p className="mt-4 rounded-lg border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-400">
             No documents yet — create your first one.

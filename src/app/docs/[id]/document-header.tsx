@@ -77,6 +77,12 @@ export default function DocumentHeader({
               View only
             </span>
           )}
+          <a
+            href={`/api/documents/${id}/export?format=md`}
+            className="text-sm text-slate-400 hover:text-slate-600"
+          >
+            Export .md
+          </a>
           {canShare && (
             <button
               type="button"
