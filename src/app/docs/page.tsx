@@ -1,12 +1,26 @@
 import { verifySession } from "@/lib/dal";
+import { prisma } from "@/lib/prisma";
 import LogoutButton from "./logout-button";
+import CreateDocumentButton from "./create-document-button";
+import DocumentRow from "./document-row";
 
-// Placeholder shell for Phase 1 — proves login + session + proxy protection
-// work end to end. Phase 2 replaces this with the real documents dashboard.
 export default async function DocsHome() {
   const session = await verifySession();
+
+  const [owned, sharedRows] = await Promise.all([
+    prisma.document.findMany({
+      where: { ownerId: session.userId },
+      orderBy: { updatedAt: "desc" },
+    }),
+    prisma.documentShare.findMany({
+      where: { userId: session.userId },
+      orderBy: { document: { updatedAt: "desc" } },
+      include: { document: true, grantedBy: { select: { name: true } } },
+    }),
+  ]);
+
   return (
-    <div className="flex flex-1 flex-col px-8 py-8">
+    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8">
       <div className="flex items-center justify-between border-b border-slate-200 pb-4">
         <h1 className="text-xl font-semibold text-slate-900">Kalam</h1>
         <div className="flex items-center gap-4">
@@ -14,7 +28,59 @@ export default async function DocsHome() {
           <LogoutButton />
         </div>
       </div>
-      <p className="mt-8 text-slate-500">Documents dashboard coming in Phase 2.</p>
+
+      <section className="mt-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-medium tracking-wide text-slate-400">
+            My documents
+          </h2>
+          <CreateDocumentButton />
+        </div>
+        {owned.length === 0 ? (
+          <p className="mt-4 rounded-lg border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-400">
+            No documents yet — create your first one.
+          </p>
+        ) : (
+          <ul className="mt-3 divide-y divide-slate-100">
+            {owned.map((doc) => (
+              <DocumentRow
+                key={doc.id}
+                id={doc.id}
+                title={doc.title}
+                updatedAt={doc.updatedAt.toISOString()}
+                canRename
+                canDelete
+              />
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-sm font-medium tracking-wide text-slate-400">
+          Shared with me
+        </h2>
+        {sharedRows.length === 0 ? (
+          <p className="mt-4 rounded-lg border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-400">
+            Nothing has been shared with you yet.
+          </p>
+        ) : (
+          <ul className="mt-3 divide-y divide-slate-100">
+            {sharedRows.map((s) => (
+              <DocumentRow
+                key={s.document.id}
+                id={s.document.id}
+                title={s.document.title}
+                updatedAt={s.document.updatedAt.toISOString()}
+                canRename={s.role === "EDITOR"}
+                canDelete={false}
+                badge={s.role === "EDITOR" ? "Editor" : "Viewer"}
+                sharedBy={s.grantedBy.name}
+              />
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }
