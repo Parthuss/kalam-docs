@@ -23,6 +23,9 @@ Considered reusing one Neon database with a `?schema=test` query param for test 
 ## [T+0:00] Content stored as sanitized HTML, not ProseMirror JSON
 Tiptap accepts and emits HTML directly, and both the import path (mammoth/marked → HTML) and export path (HTML → Markdown via turndown) become close to free. Trade-off: a real XSS surface on every write, paid down with a strict server-side sanitize-html allowlist matching the Tiptap schema. Would choose ProseMirism JSON instead if versioning or CRDT collaboration were on the roadmap — they explicitly are not (see cut list below).
 
+## [T+0:00] Landmine: Vercel Deployment Protection (SSO) blocks public review by default
+First production deploy returned a 302 to `vercel.com/sso-api` instead of the app — this Vercel team's default project settings enable SSO protection on every deployment except ones on a *custom* domain (a `*.vercel.app` URL doesn't count as custom). Left as default, reviewers would hit a Vercel login wall instead of the app. Disabled via `vercel project protection disable <project> --sso`. Also learned the hard way: Vercel snapshots environment variables per-build, so adding `DATABASE_URL`/`DIRECT_DATABASE_URL` after a deploy doesn't retroactively apply to that deployment or any alias already pointed at it — a fresh `vercel deploy --prod` (and re-aliasing) is required.
+
 ## [T+0:00] Explicit scope cuts
 - Real-time collaborative editing (Yjs/CRDT + persistent WebSocket server): out of reach for a serverless free-tier deploy in this timebox. Shipping debounced autosave + last-writer-wins + a visible save-state indicator instead, documented plainly as not real-time collab.
 - Blob storage for uploads: parsing files in the Route Handler and persisting only the resulting HTML removes a whole storage dependency and its failure modes, at the cost of not retaining the original file.
